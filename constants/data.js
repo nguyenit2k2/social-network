@@ -5,7 +5,9 @@ export const social = {
     tiktok : images.tiktok,
     phone: images.phone
 }
-    
+    export const idUser = {
+        id : 557
+    }
 
 export const feeds =[
     {fe:images.fe1},
@@ -74,6 +76,38 @@ export const friends = [
         name: 'Gray',
         image: images.friend5,
         hasPremium: false,
+    },
+]
+export const newFriends = [
+    {
+        id: '1',
+        name: 'Lucy',
+        image: images.friend1,
+       
+    },
+    {
+        id: '2',
+        name: 'Erza',
+        image: images.friend2,
+        
+    },
+    {
+        id: '3',
+        name: 'Wendy',
+        image: images.friend3,
+        
+    },
+    {
+        id: '4',
+        name: 'natsu',
+        image: images.friend4,
+       
+    },
+    {
+        id: '5',
+        name: 'Gray',
+        image: images.friend5,
+        
     },
 ]
 

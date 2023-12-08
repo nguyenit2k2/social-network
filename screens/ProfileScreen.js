@@ -1,9 +1,26 @@
 import { SafeAreaView, StyleSheet, Text, View, Image, ImageBackground, FlatList, TouchableOpacity, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { COLORS } from '../constants/theme'
 import { FontAwesome,MaterialCommunityIcons ,FontAwesome5,Ionicons   } from '@expo/vector-icons';
-import { myProfile,feeds } from '../constants/data'
+import { myProfile,feeds,idUser } from '../constants/data'
 const ProfileScreen = () => {
+  const [sendAddFriends,setSendAddFriends] = useState(false);
+  const [follow,setFollow] = useState(false);
+  const [categoryInfo,setCategoryInfo] = useState({
+    detail:false,
+    friend :false,
+    post :false
+  });
+  const handlePressCategory = (buttonName)=>{
+    setCategoryInfo((prevCategoryInfo)=>{
+      const restCategoryInfo = Object.keys(prevCategoryInfo).reduce((acc,key)=>{
+        acc[key] = false ;
+        console.log(acc[key])
+      },{});
+      restCategoryInfo[buttonName] = true;
+      return restCategoryInfo;
+    })
+  }
   const renderItem = ({ item }) => (
     <View style={{width:250,height:250,padding:10,backgroundColor:'#fff',marginLeft:5,position:'relative'}} >
       <TouchableOpacity style={{zIndex:1}}>
@@ -45,18 +62,27 @@ const ProfileScreen = () => {
             </View>
           </View>
           <View style={{flexDirection:"row",marginHorizontal:30,gap:10,marginVertical:10}} >
-            <View style={{flex:1,alignItems:'center',justifyContent:'center',padding:12,borderRadius:5,backgroundColor:COLORS.primary }} >
+            <Pressable onPress={()=>setFollow(!follow)}
+            style={[{flex:1,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    padding:12,
+                    borderRadius:5,
+                    backgroundColor:follow? COLORS.primary : 'gray'},
+                    
+                    ]} >
               <Text style={{color:'white',fontWeight:'bold'}} >
-                Message
+                {follow?"Follow":"UnFollow"}
               </Text>
-            </View>
-            <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#fff',padding:12,borderRadius:5}}>
+            </Pressable>
+            <Pressable onPress={()=>setSendAddFriends(!sendAddFriends)}
+            style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#fff',padding:12,borderRadius:5}}>
                <Text style={{color:COLORS.primary,fontWeight:'bold'}}>
-                Add Friends
+               {sendAddFriends ? "Add Friends ":" Requested" }
                </Text>
-            </View>
+            </Pressable>
           </View>
-          <View style={{flexDirection:'row',width:'100%',alignItems:'center',justifyContent:'center'}} >
+          <View style={{flexDirection:'row',width:'100%',alignItems:'center',justifyContent:'space-between'}} >
              <View style={{flexDirection:'column',alignItems:'center',justifyContent:'center',flex:1}} >
                  <Text style={{fontSize:22,fontWeight:'bold'}} >78</Text>
                  <Text style={{fontSize:14,color:'#808080'}} >Posts</Text>
@@ -69,19 +95,23 @@ const ProfileScreen = () => {
                  <Text style={{fontSize:22,fontWeight:'bold'}} >435</Text>
                  <Text style={{fontSize:14,color:'#808080'}} >Following</Text>
              </View>
-             
-             
           </View>
-          <View style={{flexDirection:'row',marginTop:10}} >
-            <View style={{flexDirection:'row',gap:5,justifyContent:'center',alignItems:'center',flex:1,borderRightColor:'gray',borderRightWidth:0.5}} >
-            <FontAwesome5 name="user-friends" size={20} color="black" />
-            
-            <Text style={{fontWeight:'bold',fontSize:16}} >Friends</Text>
-            </View>
-            <View style={{flexDirection:'row',gap:5,justifyContent:'center',alignItems:'center',flex:1}} >
-            <MaterialCommunityIcons name="post-outline"  size={20} color="gray" />
-            <Text style={{fontWeight:'bold',fontSize:16,color:'gray'}} >Posts</Text>
-            </View>
+          <View style={{flexDirection:'row',margin:3,alignItems:'center',justifyContent:'center',width:'100%'}} >
+             <Pressable onPress={()=>handlePressCategory('detail')}
+             style={styles.infoButton} >
+             <MaterialCommunityIcons  style={styles.infoIcon} name="post" size={20} color="black" />
+              <Text style={styles.infoText} >Details</Text>
+             </Pressable>
+             <Pressable  onPress={()=>handlePressCategory('friend')}
+             style={styles.infoButton} >
+             <FontAwesome5 name="user-friends" size={20} color="black"  style={styles.infoIcon} />
+              <Text style={styles.infoText} >Friends</Text>
+             </Pressable>
+             <Pressable  onPress={()=>handlePressCategory('post')}
+              style={styles.infoButton} >
+             <MaterialCommunityIcons name="account-details" size={20} color="black" style={styles.infoIcon} />
+              <Text style={styles.infoText} >Posts</Text>
+             </Pressable>
           </View>
           <View style={{alignItems:'center',justifyContent:'center',margin:10}} >
             <FlatList
@@ -104,12 +134,31 @@ export default ProfileScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems:'center',
+    justifyContent:'center'
   },
   image: {
     flex: 1,
     alignItems: 'center',
     justifyContent: "center"
   },
+  infoButton :{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    marginHorizontal:5,
+    width:'100%',
+    
+  },
+  infoIcon:{
+
+  },
+  infoText :{
+    marginLeft:5,
+    fontSize:16,
+    fontWeight:'bold'
+  }
 
 
 })
