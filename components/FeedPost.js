@@ -5,8 +5,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  VirtualizedList
 } from "react-native";
-import React from "react";
+import React  from "react";
+import { useNavigation } from '@react-navigation/native';
 import {
   Ionicons,
   Feather,
@@ -16,31 +18,24 @@ import {
 } from "@expo/vector-icons";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import { COLORS, FONTS, SIZES, images } from '../constants'
+import { anotherUserProfile } from '../constants/data'
 
 const FeedPost = ({users}) => {
-  const renderItem = ({ item }) => (
-    <View
-      style={{
-        backgroundColor: "#fff",
-        flexDirection: "column",
-        width: "100%",
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: "#fff",
-        marginVertical: 12,
-      }}
+  const navigation = useNavigation();
+  return (
+    
+   <View>
+       {users.map(item=>(
+    <View key={item.id}>
+       <View
+      style={styles.itemContainer}
     >
       {/**Post header */}
       <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginHorizontal: 8,
-          padding: 5,
-        }}
+        style={styles.postHeader}
       >
-        <View
+        <Pressable
+        onPress={()=>navigation.navigate('SeeProfileScreen',{data:anotherUserProfile})}
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -59,7 +54,7 @@ const FeedPost = ({users}) => {
           />
           <View style={{ marginLeft: 12 }}>
             <Text style={{ ...FONTS.body4, fontWeight: "bold" }}>
-              {item.name}
+              {item.name} 
             </Text>
             <Text
               style={{
@@ -71,7 +66,7 @@ const FeedPost = ({users}) => {
               {item.timePost}
             </Text>
           </View>
-        </View>
+        </Pressable>
         <MaterialCommunityIcons
           name="dots-vertical"
           size={24}
@@ -103,15 +98,7 @@ const FeedPost = ({users}) => {
       </View>
 
       {/*Posts likes and comments */}
-      <View style={{
-        marginHorizontal: 8,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 5,
-        borderTopColor: 'gray',
-        borderTopWidth: 1
-      }}>
+      <View style={styles.postComment}>
         <View style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -129,7 +116,7 @@ const FeedPost = ({users}) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('CommentScreen',{item})} >
             <View style={{
               flexDirection: 'column',
               alignItems: 'center',
@@ -167,22 +154,39 @@ const FeedPost = ({users}) => {
       </View>
 
     </View>
-  );
-  return (
-    
-    <View style = {{marginBottom:55}}>  
-      <FlatList data={users} 
-      renderItem={renderItem}
-      keyExtractor={(item)=>item.id}
-      />
     </View>
+  ))}
+   </View>
+    
   )
 }
 
-export default FeedPost
+export default FeedPost;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  
+  itemContainer:{
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    width: "100%",
+    borderRadius: 10,
+    marginVertical: 5,
   },
+  postHeader:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 8,
+    padding: 5,
+  },
+  postComment:{
+    marginHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    borderTopColor: 'gray',
+    borderTopWidth: 1
+  },
+
 })

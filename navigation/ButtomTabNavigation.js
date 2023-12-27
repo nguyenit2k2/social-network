@@ -1,4 +1,4 @@
-import { View, Text ,StyleSheet} from 'react-native'
+import { View, Text ,StyleSheet, Pressable} from 'react-native'
 import React from 'react'
 import {Feather,Iconicons,FontAwesome,FontAwesome5,LinearGradient, Ionicons} from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7,6 +7,9 @@ import ProfileScreen from '../screens/ProfileScreen';
 import CreateScreen from '../screens/CreateScreen';
 import ChatScreen from '../screens/ChatScreen';
 import NotificaitonScreen from '../screens/NotificaitonScreen';
+import SeeProfileScreen from '../screens/SeeProfileScreen';
+import { myProfile } from '../constants/data'
+import { useNavigation } from '@react-navigation/native';
 
 const Tab  = createBottomTabNavigator();
 const screenOptions = {
@@ -25,24 +28,27 @@ const screenOptions = {
     borderTopRightRadius: 20,
     }}
 const ButtomTabNavigation = () => {
+  const navigation = useNavigation();
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Navigator screenOptions={screenOptions} initialRouteName='FeedScreen'>
      
-      <Tab.Screen
-      name = 'ProfileScreen'
-      component= {ProfileScreen}
-      options = {{
-        tabBarIcon: ({focused})=>{
-            return (
-              <View style={focused ? styles.iconStyle:''}>
-            <FontAwesome name='user-circle' size={24} color={focused ? 'white' : 'gray'}/>
-         </View>         
-                
-            )
-        }
-      }}
-      />
-     
+        <Tab.Screen
+        name = 'ProfileScreen'
+        component= {ProfileScreen}
+        initialParams={{ data:myProfile }}
+        options = {{
+          tabBarIcon: ({focused})=>{
+              return (
+                <View 
+                style={focused ? styles.iconStyle:''}>
+              <FontAwesome name='user-circle' size={24} color={focused ? 'white' : 'gray'}/>
+          </View>         
+                  
+              )
+          }
+        }}
+        />
+      
       <Tab.Screen
       name = 'CreateScreen'
       component={CreateScreen}

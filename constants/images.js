@@ -17,6 +17,7 @@ const post3 = require('../assets/images/post3.jpg')
 const post4 = require('../assets/images/post4.jpg')
 const post5 = require('../assets/images/post5.jpg')
 const bg1 = require('../assets/images/bg_1.jpg')
+const bg2 = require('../assets/images/bg_2.jpg')
 const youtube = require('../assets/images/youtube.jpg')
 const phone = require('../assets/images/phone.jpg')
 const tiktok = require('../assets/images/tiktok.jpg')
@@ -25,9 +26,25 @@ const fe1 = require('../assets/images/feed_1.jpg')
 const fe2 = require('../assets/images/feed_2.jpg')
 const fe3 = require('../assets/images/feed_3.jpg')
 const fe4 = require('../assets/images/feed_4.jpg')
+const seo1 = require('../assets/images/seo1.jpg')
+const seo2 = require('../assets/images/seo2.jpg')
+const seo3 = require('../assets/images/seo3.jpg')
+const seo4 = require('../assets/images/seo4.jpg')
+const seo5 = require('../assets/images/seo5.jpg')
+const seo6 = require('../assets/images/seo6.jpg')
+const seo7 = require('../assets/images/seo7.jpg')
+
+
 
 
 export default {
+    seo1,
+    seo2,
+    seo3,
+    seo4,
+    seo5,
+    seo6,
+    seo7,
     fe1,
     fe2,
     fe3,
@@ -55,4 +72,5 @@ export default {
     post4,
     post5,
     bg1,
+    bg2,
 }

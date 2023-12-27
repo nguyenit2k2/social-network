@@ -11,6 +11,12 @@ import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import FindScreen  from './screens/FindScreen';
+import EditProfileScreen from './screens/EditProfileScreen';
+import CommentScreen from './screens/CommentScreen';
+import ListFriendsScreen from './screens/ListFriendsScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import SeeProfileScreen from './screens/SeeProfileScreen';
+import ResultFindFriendsScreen from './screens/ResultFindFriendsScreen';
 const AppStack = createStackNavigator();
 
 export default function App() {
@@ -40,6 +46,13 @@ export default function App() {
         <AppStack.Screen name="LoginScreen" component={LoginScreen} />
         <AppStack.Screen name="SigupScreen" component={SigupScreen} />
         <AppStack.Screen name='FindScreen' component={FindScreen}/>
+        <AppStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
+        <AppStack.Screen name='CommentScreen' component={CommentScreen}/>
+        <AppStack.Screen name='ResultFindFriendsScreen' component={ResultFindFriendsScreen}/>
+        
+        <AppStack.Screen name='SeeProfileScreen' component={SeeProfileScreen}/>
+        <AppStack.Screen name='ListFriendsScreen' component={ListFriendsScreen}/>
+        <AppStack.Screen name='ProfileScreen' component={ProfileScreen}/>
         <AppStack.Screen name="BottomNaviagtion" component={BottomTabNavigation} options={{ headerShown: false }} />
       </AppStack.Navigator>
     </NavigationContainer>

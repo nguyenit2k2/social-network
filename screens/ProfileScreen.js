@@ -1,13 +1,27 @@
 import { SafeAreaView, StyleSheet, Text, View, Image, ImageBackground, FlatList, TouchableOpacity, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React,  { useState, useRef } from 'react'
+import { useNavigation,useRoute  } from '@react-navigation/native';
 import { COLORS } from '../constants/theme'
-import { FontAwesome,MaterialCommunityIcons ,FontAwesome5,Ionicons   } from '@expo/vector-icons';
-import { myProfile,feeds,idUser } from '../constants/data'
-const ProfileScreen = () => {
+import { MaterialIcons ,MaterialCommunityIcons ,FontAwesome5,Ionicons ,AntDesign,Feather } from '@expo/vector-icons';
+import { idUser } from '../constants/data'
+const ProfileScreen = ({anotherUserProfile}) => {
+  let Profile = {};
+  if (anotherUserProfile === undefined || anotherUserProfile === null) {
+    // Biến anotherUserProfile là undefined hoặc null
+    const route  = useRoute();
+     Profile =  route.params.data;
+  } else {
+    // Biến anotherUserProfile có giá trị
+     Profile = anotherUserProfile;
+  }
+
+ 
+  const navigation = useNavigation();
   const [sendAddFriends,setSendAddFriends] = useState(false);
   const [follow,setFollow] = useState(false);
+  const [isMoreFriends,setIsMoreFriends] = useState(false); 
   const [categoryInfo,setCategoryInfo] = useState({
-    detail:false,
+    detail:true,
     friend :false,
     post :false
   });
@@ -15,62 +29,62 @@ const ProfileScreen = () => {
     setCategoryInfo((prevCategoryInfo)=>{
       const restCategoryInfo = Object.keys(prevCategoryInfo).reduce((acc,key)=>{
         acc[key] = false ;
-        console.log(acc[key])
+        return acc;
       },{});
       restCategoryInfo[buttonName] = true;
       return restCategoryInfo;
     })
   }
+ 
   const renderItem = ({ item }) => (
-    <View style={{width:250,height:250,padding:10,backgroundColor:'#fff',marginLeft:5,position:'relative'}} >
-      <TouchableOpacity style={{zIndex:1}}>
-      <Image source={item.fe} style={{width:'100%',height:'100%'}} />
-      </TouchableOpacity>
-      <Pressable style={{flexDirection:'row',position:'absolute',zIndex:2,right:0,backgroundColor:COLORS.primary,padding:5,borderRadius:50}} >
-        <View style={{borderColor:'white',borderWidth:3,borderRadius:50,padding:5}}>
-        <Ionicons name="person-add" size={20} color='#fff' />
+      <TouchableOpacity style={{margin:3,padding:5,backgroundColor:'white',alignItems:'center',height:200,borderRadius:5}}>
+        <View>
+          <Image source={item.image} style={{width:120,height:160}} resizeMode='cover' />
         </View>
-      </Pressable>
-    </View>
+        <View>
+          <Text>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
   )
   return (
 
-    <View style={styles.container}>
-      <ImageBackground source={myProfile[0].backgroundImage} resizeMode="cover" style={styles.image}>
+   <SafeAreaView style={{flex:1}}>
+    
+     <View style={styles.container}>
+      <ImageBackground source={Profile.backgroundImage} resizeMode="cover" style={[styles.image,{position:'relative',zIndex:5}]}>
+      {Profile.id!=idUser.id &&
+      <Pressable onPress={()=>navigation.goBack()}
+      style={{position:'absolute',zIndex:10,left:0,top:0}}>
+      <Feather name="arrow-left" size={28} color={COLORS.primary} style={{fontWeight:'bold'}} />
+      </Pressable>}
         <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center' }} >
-          <View style={{
-            width: 150,
-            height: 150,
-            marginTop: 10,
-            borderRadius: 1000,
-            padding: 5,
-            backgroundColor: '#fff',
-            borderColor: COLORS.primary,
-            borderWidth:3
-          }} >
-            <Image source={myProfile[0].avata} style={{ width: '100%', height: '100%', borderRadius: 100 }} />
+          <View style={styles.avatarImage} >
+            <Image source={Profile.avatar} style={{ width: '100%', height: '100%', borderRadius: 100 }} />
           </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+           {/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\NAME\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
+           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <View style={{flexDirection:'row',gap:10}} >
-              <Text>{myProfile[0].name}</Text>
+              <Text style={{margin:3,padding:2,backgroundColor:'white',borderRadius:5,fontWeight:'600',fontSize:16}}>{Profile.name}</Text>
             
             </View>
             <View>
-              <Text style={{color:'gray',fontSize:14}} >
-                {myProfile[0].description}
+              <Text style={{color:'gray',fontSize:14,backgroundColor:'white',borderRadius:5}} >
+                {Profile.description}
               </Text>
             </View>
           </View>
+          {/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\BUTTON\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
           <View style={{flexDirection:"row",marginHorizontal:30,gap:10,marginVertical:10}} >
+            {idUser.id!=Profile.id &&
+            <>
             <Pressable onPress={()=>setFollow(!follow)}
-            style={[{flex:1,
+            style={{flex:1,
                     alignItems:'center',
                     justifyContent:'center',
                     padding:12,
                     borderRadius:5,
-                    backgroundColor:follow? COLORS.primary : 'gray'},
-                    
-                    ]} >
+                    backgroundColor:follow? COLORS.primary : 'gray'}
+                    } >
               <Text style={{color:'white',fontWeight:'bold'}} >
                 {follow?"Follow":"UnFollow"}
               </Text>
@@ -81,51 +95,118 @@ const ProfileScreen = () => {
                {sendAddFriends ? "Add Friends ":" Requested" }
                </Text>
             </Pressable>
+            </>
+            }
+            {idUser.id==Profile.id &&
+            <>
+            <Pressable onPress={()=>navigation.navigate('EditProfileScreen',Profile)}
+            style={{flex:1,
+              flexDirection:'row',
+              gap :10,
+              alignItems:'center',
+              justifyContent:'center',
+              padding:12,
+              borderRadius:5,
+              backgroundColor:COLORS.primary}
+              } >
+            <FontAwesome5 name="edit" size={24} color="#fff" />
+            <Text style={{color:'white',fontWeight:'bold'}} >
+                Edit My Profile 
+              </Text>
+            </Pressable>
+            </>
+            }
           </View>
-          <View style={{flexDirection:'row',width:'100%',alignItems:'center',justifyContent:'space-between'}} >
-             <View style={{flexDirection:'column',alignItems:'center',justifyContent:'center',flex:1}} >
-                 <Text style={{fontSize:22,fontWeight:'bold'}} >78</Text>
-                 <Text style={{fontSize:14,color:'#808080'}} >Posts</Text>
+          {/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\FOLLOWINGS,POST\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
+          <View style={{flexDirection:'row'}} >
+             <View style={styles.itemFollow} >
+                 <Text style={styles.itemFollowNumber} >{Profile.numberFriends}</Text>
+                 <Text style={styles.itemFollowType} >Friends</Text>
              </View>
-             <View style={{flexDirection:'column',alignItems:'center',justifyContent:'center',flex:1}} >
-                 <Text style={{fontSize:22,fontWeight:'bold'}} >80</Text>
-                 <Text style={{fontSize:14,color:'#808080'}} >Follow</Text>
+             <View style={styles.itemFollow} >
+                 <Text style={styles.itemFollowNumber} >{Profile.numberFollows}</Text>
+                 <Text style={styles.itemFollowType} >Follow</Text>
              </View>
-             <View style={{flexDirection:'column',alignItems:'center',justifyContent:'center',flex:1}} >
-                 <Text style={{fontSize:22,fontWeight:'bold'}} >435</Text>
-                 <Text style={{fontSize:14,color:'#808080'}} >Following</Text>
+             <View style={styles.itemFollow} >
+                 <Text style={styles.itemFollowNumber} >{Profile.numberFollowings}</Text>
+                 <Text style={styles.itemFollowType} >Following</Text>
              </View>
           </View>
-          <View style={{flexDirection:'row',margin:3,alignItems:'center',justifyContent:'center',width:'100%'}} >
+          {/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\SELECT DETAIL\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
+          <View style={styles.selectDetailContainer} >
              <Pressable onPress={()=>handlePressCategory('detail')}
-             style={styles.infoButton} >
-             <MaterialCommunityIcons  style={styles.infoIcon} name="post" size={20} color="black" />
-              <Text style={styles.infoText} >Details</Text>
+             style={[styles.infoButton,{backgroundColor:categoryInfo.detail? COLORS.primary:'gray'}]} >
+             <MaterialCommunityIcons   name="post" size={20} color='white'/>
+              <Text style={{color:'white',fontWeight:'bold'}}>Details</Text>
              </Pressable>
              <Pressable  onPress={()=>handlePressCategory('friend')}
-             style={styles.infoButton} >
-             <FontAwesome5 name="user-friends" size={20} color="black"  style={styles.infoIcon} />
-              <Text style={styles.infoText} >Friends</Text>
+            style={[styles.infoButton,{backgroundColor:categoryInfo.friend? COLORS.primary:'gray'}]}>
+             <FontAwesome5 name="user-friends" size={20} color='white'/>
+              <Text style={{color:'white',fontWeight:'bold'}}  >Friends</Text>
              </Pressable>
              <Pressable  onPress={()=>handlePressCategory('post')}
-              style={styles.infoButton} >
-             <MaterialCommunityIcons name="account-details" size={20} color="black" style={styles.infoIcon} />
-              <Text style={styles.infoText} >Posts</Text>
+              style={[styles.infoButton,{backgroundColor:categoryInfo.post? COLORS.primary:'gray'}]}>
+             <MaterialCommunityIcons name="account-details" size={20} color= 'white'/>
+              <Text style={{color:'white',fontWeight:'bold'}}  >Posts</Text>
              </Pressable>
           </View>
-          <View style={{alignItems:'center',justifyContent:'center',margin:10}} >
-            <FlatList
+           {/**\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\DETAIL\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */}
+           <View style={styles.detailContainer} >
+           {categoryInfo.detail &&
+           <View style={{flexDirection:'column',flex:1,backgroundColor:'white',width:325,margin:10}}>
+               <View style={{flexDirection:'row',gap:10,borderColor:COLORS.primary,borderWidth:2,margin:5,padding:10,borderRadius:5}}>
+               <MaterialIcons name="work" size={24} color={COLORS.primary} />
+               <View  style={{borderBottomColor:COLORS.primary,borderBottomWidth:1,width:260}} >
+               <Text>{Profile.detailUser.job}</Text>
+               </View>
+               </View>
+               <View style={{flexDirection:'row',gap:10,borderColor:COLORS.primary,borderWidth:2,margin:5,padding:10,borderRadius:5}}>
+               <Ionicons name="location" size={24} color={COLORS.primary} />
+               <View  style={{borderBottomColor:'gray',borderBottomWidth:1,width:260}} >
+               <Text>{Profile.detailUser.address}</Text>
+               </View>
+               </View>
+               <View style={{flexDirection:'row',gap:10,borderColor:COLORS.primary,borderWidth:2,margin:5,padding:10,borderRadius:5}}>
+               <AntDesign name="home" size={24} color={COLORS.primary}  />
+               <View  style={{borderBottomColor:COLORS.primary,borderBottomWidth:1,width:260}} >
+               <Text>{Profile.detailUser.marriage}</Text>
+               </View>
+               </View>
+               <View style={{flexDirection:'row',gap:10,borderColor:COLORS.primary,borderWidth:2,margin:5,padding:10,borderRadius:5}}>
+               <MaterialCommunityIcons name="robot-love" size={24}  color={COLORS.primary}  />
+               <View  style={{borderBottomColor:COLORS.primary,borderBottomWidth:1,width:260}} >
+               <Text>{Profile.detailUser.interest}</Text>
+               </View>
+               </View>
+               
+            </View>}
+            {categoryInfo.friend &&
+            <>
+           <View style={{position:'relative'}}>
+           <FlatList
               horizontal={true}
-              data={feeds}
+              data={Profile.friends.slice(1,6)}
               renderItem={renderItem}
-              keyExtractor={(item)=>item.id}
-              
-              />
+              keyExtractor={item=>item.id}
+              onEndReached={()=>setIsMoreFriends(true)}
+              onEndReachedThreshold={0.2}
+            />
+            {isMoreFriends &&
+            <TouchableOpacity onPress={()=>navigation.navigate('ListFriendsScreen',Profile.friends)}
+            style={{position:'absolute',right:0,margin:10,backgroundColor:'white',padding:12,borderRadius:10}}>
+            <FontAwesome5 name="plus" size={16} color="black" />
+              </TouchableOpacity>}
+           </View>
+            </>
+            }
+             
           </View>
+          
         </View>
       </ImageBackground>
     </View>
 
+   </SafeAreaView>
   )
 }
 
@@ -134,9 +215,38 @@ export default ProfileScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center',
-    justifyContent:'center'
   },
+  itemFollowType:{
+    fontSize:14,
+    color:'#808080',
+    backgroundColor:'white',
+    padding:2,
+    borderRadius:5
+  },
+  itemFollowNumber:{
+    fontSize:22,
+    fontWeight:'bold',
+    backgroundColor:'white',
+    padding:2,
+    borderRadius:5},
+  detailContainer:{
+    alignItems:'center',
+    justifyContent:'center',
+    margin:10,
+    width:'100%'},
+  selectDetailContainer:{
+    flexDirection:'row',
+    margin:3,
+    alignItems:'center',
+    justifyContent:'center',
+    width:'100%'},
+  itemFollow:{
+    flexDirection:'column',
+    alignItems:'center',
+    justifyContent:'center',
+    flex:1,
+    gap:5
+    },
   image: {
     flex: 1,
     alignItems: 'center',
@@ -149,16 +259,57 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     marginHorizontal:5,
     width:'100%',
-    
+    gap:5,
+    backgroundColor:COLORS.primary,
+    padding:5,
+    borderRadius:5,
   },
-  infoIcon:{
+  detailContainer:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  detailRow:{
+   width:'100%',
+   flexDirection:'row',
+   padding:10,
+   
+  },
+  detailIcon:{
+  color:COLORS.secondary,
+  },
+  detailText:{
+    width:'90%',
+    marginHorizontal:10,
+    borderBottomColor:COLORS.secondary,
+    borderBottomWidth:0.5
+  },
+  editProfileButton:{
+    position:'absolute',
+    right:0,
+    bottom:0,
+    backgroundColor:COLORS.primary,
+    padding:7.5,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:25,
+    borderColor:'#fff',
+    borderWidth:3
+  },
+  avatarImage:{
+    width: 150,
+    height: 150,
+    marginTop: 10,
+    borderRadius: 1000,
+    padding: 5,
+    backgroundColor: '#fff',
+    borderColor: COLORS.primary,
+    borderWidth:3,
+    position:'relative'
+  },
 
-  },
-  infoText :{
-    marginLeft:5,
-    fontSize:16,
-    fontWeight:'bold'
-  }
+  
+
 
 
 })
