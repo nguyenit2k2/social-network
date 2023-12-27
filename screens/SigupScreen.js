@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView ,Platform
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView ,Platform, SafeAreaView
 } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
@@ -19,7 +19,8 @@ const LoginScreen = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}>
+      <ScrollView contentContainerStyle={styles.container}>
       
       <Text style={styles.text}>CREATE NEW ACCONUT </Text>
 
@@ -75,6 +76,7 @@ const LoginScreen = () => {
         </View>
       
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
