@@ -5,30 +5,45 @@ import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton'
 import { useNavigation } from '@react-navigation/native';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-   const navigation = useNavigation();
-  const handleLogin = () => {
-    // Implement your login logic here using email and password
-    navigation.navigate(LoginScreen);
-   
-   
-  };
-
+  const [name, setName] = useState('Nguyen');
+  const [email, setEmail] = useState('jwtnshi@gmail.com');
+  const [password, setPassword] = useState('hoangnguyen123');
+  const navigation = useNavigation();
+  const handleSignup = async() => {
+    try {
+      await axios.post('/register', {
+        name: name,
+        email: email,
+        password: password
+      })
+      navigation.navigate(LoginScreen);
+    } catch(e) {
+      console.log(e)
+    }
+  }
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}>
+    <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
       <ScrollView contentContainerStyle={styles.container}>
       
-      <Text style={styles.text}>CREATE NEW ACCONUT </Text>
-
+      <Text style={styles.text}>CREATE NEW ACCOUNT </Text>
+      <View>
+      <FormInput
+        labelValue={name}
+        onChangeText={(userName) => setName(userName)}
+        placeholderText="Name"
+        iconType="user"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
       <FormInput
         labelValue={email}
         onChangeText={(userEmail) => setEmail(userEmail)}
         placeholderText="Email"
-        iconType="user"
+        iconType="mail"
         keyboardType="email-address"
         autoCapitalize="none"
         autoCorrect={false}
@@ -41,8 +56,8 @@ const LoginScreen = () => {
         iconType="lock"
         secureTextEntry={true}
       />
-
-      <FormButton buttonTitle="Sign In" onPress={handleLogin} />
+    <View>
+      <FormButton buttonTitle="Sign In" onPress={handleSignup} />
       <View style={styles.textPrivate}>
         <Text style={styles.color_textPrivate}>
           By registering, you confirm that you accept our{' '}
@@ -57,7 +72,7 @@ const LoginScreen = () => {
           Privacy Policy
         </Text>
       </View>
-      <View>
+      </View>
           <SocialButton
             buttonTitle="Sign Up with Facebook"
             btnType="facebook"
@@ -82,6 +97,8 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    display: 'block',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,

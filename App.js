@@ -17,8 +17,10 @@ import ListFriendsScreen from './screens/ListFriendsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SeeProfileScreen from './screens/SeeProfileScreen';
 import ResultFindFriendsScreen from './screens/ResultFindFriendsScreen';
+import axios from 'axios'
+import ButtomTabNavigation from './navigation/ButtomTabNavigation';
 const AppStack = createStackNavigator();
-
+axios.defaults.baseURL = 'https://14bf-42-115-93-69.ngrok-free.app/api'
 export default function App() {
   const [fontsLoaded] = useFonts({
     black: require('./assets/fonts/Poppins-Black.ttf'),

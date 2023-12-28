@@ -46,7 +46,7 @@ const NotificaitonScreen = () => {
   </View>
   )
   return (
-    <View style={styles.contain} >
+    <SafeAreaView style={styles.contain} >
       <View>
         <Text style={{ fontSize: 24, fontWeight: 'bold' }}  >Notification</Text>
       </View>
@@ -70,7 +70,7 @@ const NotificaitonScreen = () => {
            keyExtractor={(item)=>item.id}
         />}
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

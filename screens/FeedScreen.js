@@ -56,14 +56,13 @@ const FeedScreen = () => {
        * \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ CREATE POST\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
        * \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
        */}
-           <FeedPost users={users}/>
+           <FeedPost/>
            </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default FeedScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

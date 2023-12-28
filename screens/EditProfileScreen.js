@@ -1,30 +1,27 @@
 import { Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather, Entypo,MaterialCommunityIcons  } from '@expo/vector-icons';
 import { COLORS } from '../constants/theme';
 const EditProfileScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const userProfile = route.params;
-  const [newProfile,setNewProfile] = useState({
-    name: null,
-    avatar: null,
-    backgroundImage: null,
-    description: null,
-    detailUser: {
-        job: null,
-        address: null,
-        marriage: null,
-        dataOfBirth: null,
-        interest: null,
-    },
-    numberFriends: null,
-    numberFollows: null,
-    numberFollowings: null,
-});
+  const [user, setUser] = useState('') 
+  const [token, setToken] = useState('') 
+  useEffect(() => {
+    const getUserFromAsyncStorage = async () => {
+      try {
+        const storedUser = JSON.parse(await AsyncStorage.getItem('user'));
+        const token = await AsyncStorage.getItem('token');
+        setUser(storedUser);
+        setToken(token)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserFromAsyncStorage();
+  }, [])
 
-  console.log(newProfile);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{ padding: 10, position: 'relative' }}>

@@ -309,7 +309,7 @@ export const posts = [
     },
 ]
 export const myProfile = {
-    id:557,
+    id:1,
     name:'Oliver Meliodas',
     avatar:images.seo1,
     backgroundImage:images.bg1,

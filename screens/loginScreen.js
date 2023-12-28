@@ -5,23 +5,31 @@ import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton'
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('kiaisoft.nguyen.vo@gmail.com');
+  const [password, setPassword] = useState('hoangnguyen123');
   const navigation = useNavigation();
-  const handleLogin = () => {
-    // Implement your login logic here using email and password
-    console.log('Login successful')
-    navigation.navigate('BottomNaviagtion' ,{name :"Feed"})
+  const handleLogin = async() => {
+    try {
+      await axios.post('/login', {
+        email: email,
+        password: password
+      }).then(async function(response){
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.user))
+        await AsyncStorage.setItem('token', response.data.access_token)
+      })
+      navigation.navigate('BottomNaviagtion' ,{name :"Feed"})
+    } catch(e) {
+      console.log(e)
+    }
   };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={require('../assets/images/logo.jpg')} style={styles.logo} />
       <Text style={styles.text}>4TL Social App </Text>
-
       <FormInput
         labelValue={email}
         onChangeText={(userEmail) => setEmail(userEmail)}
@@ -73,6 +81,7 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1, 
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
