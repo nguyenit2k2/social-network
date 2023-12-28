@@ -1,15 +1,17 @@
 import { View, Text ,StyleSheet, Pressable} from 'react-native'
 import React from 'react'
-import {Feather,Iconicons,FontAwesome,FontAwesome5,LinearGradient, Ionicons} from '@expo/vector-icons'
+import {Feather,Iconicons,FontAwesome,FontAwesome5,LinearGradient, Ionicons,AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FeedScreen from '../screens/FeedScreen'
 import ProfileScreen from '../screens/ProfileScreen';
 import CreateScreen from '../screens/CreateScreen';
 import ChatScreen from '../screens/ChatScreen';
 import NotificaitonScreen from '../screens/NotificaitonScreen';
+import SetUpScreen from '../screens/SetUpScreen';
 import SeeProfileScreen from '../screens/SeeProfileScreen';
 import { myProfile } from '../constants/data'
 import { useNavigation } from '@react-navigation/native';
+
 
 const Tab  = createBottomTabNavigator();
 const screenOptions = {
@@ -77,20 +79,7 @@ const ButtomTabNavigation = () => {
         }
       }}
       />
-      <Tab.Screen
-      name = 'ChatScreen'
-      component={ChatScreen}
-      options={{
-        tabBarIcon : ({focused})=>{
-          return ( 
-            <View style={focused ? styles.iconStyle:''}>
-            <Ionicons name = "chatbox-outline" size={24} color={focused ? 'white' : 'gray'}/>
-          </View>         
-    
-          )
-        }
-      }}
-      />
+     
       <Tab.Screen
       name = 'NotificaitonScreen'
       component={NotificaitonScreen}
@@ -104,6 +93,21 @@ const ButtomTabNavigation = () => {
         }
       }}
       />
+       <Tab.Screen
+      name = 'SetUpScreen'
+      component={SetUpScreen}
+      options={{
+        tabBarIcon : ({focused})=>{
+          return ( 
+            <View style={focused ? styles.iconStyle:''}>
+              <AntDesign name="setting" size={24}  color={focused ? 'white' : 'gray'} />
+          </View>         
+    
+          )
+        }
+      }}
+      />
+
       
     </Tab.Navigator>
   )
