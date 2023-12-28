@@ -54,6 +54,7 @@ export const friends = [
         id: 999,
         name: 'Khân',
         avatar: images.seo2,
+        feed: images.seo2,
         backgroundImage: images.bg2,
         description: 'New Description',
         friends : [
@@ -84,6 +85,7 @@ export const friends = [
         id: 1000,
         name: 'Ngọc',
         avatar: images.seo3,
+        feed: images.fe1,
         backgroundImage: images.bg1,
         description: 'Another Description',
         friends : [
@@ -114,6 +116,7 @@ export const friends = [
         id: 1001,
         name: 'Minh',
         avatar: images.seo4,
+        feed: images.seo4,
         backgroundImage: images.bg2,
         description: 'Yet Another Description',
         friends : [
@@ -144,6 +147,7 @@ export const friends = [
         id: 1002,
         name: 'Quân',
         avatar: images.seo5,
+        feed: images.seo5,
         backgroundImage: images.bg1,
         description: 'Description 3',
         friends : [
@@ -312,6 +316,7 @@ export const myProfile = {
     id:557,
     name:'Oliver Meliodas',
     avatar:images.seo1,
+    
     backgroundImage:images.bg1,
     description : 'Ta Chắn, Ta Chắn Chắn ! ',
     friends : [

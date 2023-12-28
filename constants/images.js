@@ -33,11 +33,11 @@ const seo4 = require('../assets/images/seo4.jpg')
 const seo5 = require('../assets/images/seo5.jpg')
 const seo6 = require('../assets/images/seo6.jpg')
 const seo7 = require('../assets/images/seo7.jpg')
-
-
+const feedImage = require('../assets/images/feedImage.png')
 
 
 export default {
+    feedImage,
     seo1,
     seo2,
     seo3,

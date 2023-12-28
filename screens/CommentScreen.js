@@ -13,6 +13,7 @@ const CommentScreen = () => {
     const route = useRoute();
     const item = route.params.item;
     const updatedUsersComments = [item];
+    const [comment,setComments] = useState(''); 
     const [listComments,setListComments]= useState([
         {
             id:1,
@@ -35,9 +36,13 @@ const CommentScreen = () => {
             comment :'Ảnh của bạn thật tuyệt vời! Bức tranh này đẹp đến từng chi tiết.'
         }
     ])
-
+  const handleComment= ()=>{
+    setListComments([{id:Math.floor(Math.random()*1000)+1,image:seo2,comment:comment},...listComments]);
+     setComments('');
+  }
   return (
    <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}>
+    <ScrollView>
    <View style={{flexDirection:'row',position:'relative',padding:10}} >
       <Pressable onPress={()=>navigation.goBack()}
        style={{position:'absolute',padding:10}}>
@@ -53,27 +58,37 @@ const CommentScreen = () => {
              <View style={{flexDirection:'row',backgroundColor:'#fff',padding:5,borderRadius:5,gap:10}}>
                 <Image source={seo1} style={{width:40,height:40,borderRadius:50}}/>
                 <View style={{flexDirection:'row'}}>
-                 <TextInput style={{borderBottomColor:'gray',borderBottomWidth:0.5,width:250}}
-                 placeholder='Comment .....' />
-                 <Pressable style={{alignItems:'center',justifyContent:'center',margin:10}}>
+                 <TextInput 
+                 style={{borderBottomColor:'gray',borderBottomWidth:0.5,width:250}}
+                 multiline
+                 placeholder='Comment .....' 
+                 value={comment}
+                 onChangeText={(text)=>setComments(text)}
+                 />
+                 <Pressable onPress={()=>handleComment()}
+                 style={{alignItems:'center',justifyContent:'center',margin:10}}>
                  <Ionicons name="send" size={24} color="black" />
                  </Pressable>
                 </View>
              </View>
-             <ScrollView>
+           
+             
              {listComments.map(item=>(
                 <View style={styles.commentContainer} key={item.id}>
                    <View style={{width:40,height:40}}>
                     <Image source={item.image} style={{width:'100%',height:'100%',borderRadius:100}} />
                    </View>
-                   <View style={{borderColor:'gray',borderWidth:0.5,padding:1,borderRadius:5}}>
-                    <Text>{item.comment}</Text>
+                   <View style={{borderColor:'gray',borderWidth:0.5,padding:1,borderRadius:5,width:'80%'}}>
+                    <Text 
+                    >{item.comment}</Text>
                    </View>
                 </View>
               ))}
-             </ScrollView>
+             
+         
           </View>
        </View>
+       </ScrollView>
    </SafeAreaView>
   )
 }
@@ -88,7 +103,7 @@ const styles = StyleSheet.create({
         margin:2,
         backgroundColor:'#fff',
         padding:5
-
+        
 
     },
     comment:{

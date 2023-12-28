@@ -6,7 +6,7 @@ import {
   Pressable,
   View,
 } from "react-native";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
   FontAwesome,
   FontAwesome5,
@@ -18,12 +18,22 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import { COLORS, FONTS, SIZES, images } from "../constants";
 import { friends } from "../constants/data";
+import { myProfile } from "../constants/data";
+import {idUser } from "../constants/data";
 import { HeaderFeed } from "../components/HeaderFeed";
 import { useNavigation } from "@react-navigation/native";
 import user1 from '../assets/images/user1.jpg'
 import FeedPost from '../components/FeedPost'
 import {users} from '../constants/data'
+import image from '../constants/images'
 const FeedScreen = () => {
+  const [feedList,setFeedList] = useState(friends);
+  const [profileUser, setProfileUser] = useState(myProfile);
+  useEffect(() => {
+    // Code trong đây chỉ chạy một lần khi component được mount hoặc update đầu tiên
+    setFeedList([ profileUser,...feedList]);
+  }, []); 
+
   const renderItemFeed = ({ item, index }) => (
      <View style={{position:'relative'}}>
       <View style={{width:130,height:165,borderColor:COLORS.primary,borderWidth:2,marginHorizontal:2,borderRadius:5}} >
@@ -41,7 +51,7 @@ const FeedScreen = () => {
         <View style={{padding:7.5,backgroundColor:'white',borderRadius:5}} >
         <FlatList       
           horizontal={true}
-          data={friends}
+          data={feedList}
           keyExtractor={(item) => item.id}
           renderItem={renderItemFeed}
         />
